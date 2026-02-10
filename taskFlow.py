@@ -10,7 +10,7 @@ class TaskFlowApp:
         
         self.current_frame = None
         self.tasks = [
-            {"name": "Write book", "completed": False},
+            {"name": "Complete project proposal", "completed": False},
             {"name": "Review meeting notes", "completed": False},
             {"name": "Submit report", "completed": True},
             {"name": "Email client feedback", "completed": False},
@@ -35,7 +35,7 @@ class TaskFlowApp:
         popup.grab_set()
         popup.geometry("350x120")
 
-        label = tk.Label(popup, text="Task Title:", font=("Times New Roman", 11))
+        label = tk.Label(popup, text="Task Title:", font=("Arial", 11))
         label.pack(pady=(12,4), anchor=tk.W, padx=10)
 
         entry_var = tk.StringVar()

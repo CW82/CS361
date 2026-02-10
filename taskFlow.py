@@ -64,6 +64,73 @@ class TaskFlowApp:
         entry.bind("<Return>", add_and_close)
         entry.bind("<Escape>", lambda e: cancel())
     
+    def edit_task(self, index):
+        """Open a dialog to edit an existing task"""
+        popup = tk.Toplevel(self.root)
+        popup.title("Edit Task")
+        popup.transient(self.root)
+        popup.grab_set()
+        popup.geometry("350x150")
+
+        label = tk.Label(popup, text="Task Title:", font=("Arial", 11))
+        label.pack(pady=(12,4), anchor=tk.W, padx=10)
+
+        entry_var = tk.StringVar(value=self.tasks[index]["name"])
+        entry = tk.Entry(popup, textvariable=entry_var, width=40)
+        entry.pack(padx=10)
+        entry.focus_set()
+        entry.select_range(0, tk.END)
+
+        def save_and_close(event=None):
+            title = entry_var.get().strip()
+            if title:
+                self.tasks[index]["name"] = title
+                popup.destroy()
+                self.show_homepage()
+
+        def delete_task():
+            confirm_popup = tk.Toplevel(popup)
+            confirm_popup.title("Confirm Delete")
+            confirm_popup.transient(popup)
+            confirm_popup.grab_set()
+            confirm_popup.geometry("500x100")
+
+            msg_label = tk.Label(confirm_popup, text="Are you sure? Deleting this task cannot be undone.", font=("Arial", 12))
+            msg_label.pack(pady=15)
+
+            btn_frame = tk.Frame(confirm_popup)
+            btn_frame.pack(pady=10)
+
+            def confirm_delete():
+                self.tasks.pop(index)
+                confirm_popup.destroy()
+                popup.destroy()
+                self.show_homepage()
+
+            def cancel_delete():
+                confirm_popup.destroy()
+
+            yes_btn = tk.Button(btn_frame, text="Yes", command=confirm_delete, width=10, fg="red")
+            yes_btn.pack(side=tk.LEFT, padx=6)
+            no_btn = tk.Button(btn_frame, text="No", command=cancel_delete, width=10)
+            no_btn.pack(side=tk.LEFT, padx=6)
+
+        def cancel():
+            popup.destroy()
+
+        btn_frame = tk.Frame(popup)
+        btn_frame.pack(pady=10)
+
+        save_btn = tk.Button(btn_frame, text="Save", command=save_and_close, width=8)
+        save_btn.pack(side=tk.LEFT, padx=4)
+        delete_btn = tk.Button(btn_frame, text="Delete", command=delete_task, width=8)
+        delete_btn.pack(side=tk.LEFT, padx=4)
+        cancel_btn = tk.Button(btn_frame, text="Cancel", command=cancel, width=8)
+        cancel_btn.pack(side=tk.LEFT, padx=4)
+
+        entry.bind("<Return>", save_and_close)
+        entry.bind("<Escape>", lambda e: cancel())
+    
     def show_start_page(self):
         """Display the start/welcome page"""
         self.clear_frame()
@@ -161,7 +228,8 @@ class TaskFlowApp:
                 task_frame,
                 text="Edit",
                 font=("Arial", 9),
-                width=6
+                width=6,
+                command=lambda idx=i: self.edit_task(idx)
             )
             edit_btn.pack(side=tk.RIGHT, padx=5)
         

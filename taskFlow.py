@@ -10,7 +10,7 @@ class TaskFlowApp:
         
         self.current_frame = None
         self.tasks = [
-            {"name": "Complete project proposal", "completed": False},
+            {"name": "Write book", "completed": False},
             {"name": "Review meeting notes", "completed": False},
             {"name": "Submit report", "completed": True},
             {"name": "Email client feedback", "completed": False},

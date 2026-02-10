@@ -131,6 +131,80 @@ class TaskFlowApp:
         entry.bind("<Return>", save_and_close)
         entry.bind("<Escape>", lambda e: cancel())
     
+    def show_help_page(self):
+        """Display the help/instructions page"""
+        self.clear_frame()
+        self.current_frame = tk.Frame(self.root, bg="white")
+        self.current_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Header
+        header_frame = tk.Frame(self.current_frame, bg="lightblue")
+        header_frame.pack(fill=tk.X)
+        
+        header_label = tk.Label(
+            header_frame,
+            text="Help & Instructions",
+            font=("Arial", 20, "bold"),
+            bg="lightblue",
+            fg="white"
+        )
+        header_label.pack(pady=15)
+        
+        # Content area with scrollbar
+        content_frame = tk.Frame(self.current_frame, bg="white")
+        content_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        # Instructions text
+        instructions_text = """
+HOW TO USE TASKFLOW
+
+ADD BUTTON:
+• Click the "+ Add Task" button at the bottom left
+• Enter your task title in the dialog box
+• Click "Add" or press Enter to save
+• Click "Cancel" or press Escape to exit
+
+EDIT BUTTON:
+• Click the "Edit" button next to any task
+• Modify the task title in the dialog box
+• Click "Save" to update the task
+• Click "Cancel" to discard changes
+• Click "Delete" to remove the task
+
+DELETE BUTTON:
+• Click the "Edit" button next to the task you want to delete
+• Click the "Delete" button in the edit dialog
+• A confirmation popup will appear asking "Are you sure?"
+• Click "Yes" to permanently delete the task
+• Click "No" to keep the task
+
+CHECKBOXES:
+• Click the checkbox next to a task to mark it as completed
+• Completed tasks are tracked in your task list
+        """
+        
+        instructions_label = tk.Label(
+            content_frame,
+            text=instructions_text,
+            font=("Arial", 11),
+            bg="white",
+            justify=tk.LEFT,
+            wraplength=550
+        )
+        instructions_label.pack(anchor=tk.W, pady=10)
+        
+        # Button frame at bottom
+        button_frame = tk.Frame(self.current_frame, bg="white")
+        button_frame.pack(fill=tk.X, padx=20, pady=10)
+        
+        back_btn = tk.Button(
+            button_frame,
+            text="← Back",
+            font=("Arial", 10),
+            command=self.show_homepage
+        )
+        back_btn.pack(side=tk.LEFT, padx=5)
+    
     def show_start_page(self):
         """Display the start/welcome page"""
         self.clear_frame()
@@ -252,6 +326,20 @@ class TaskFlowApp:
             command=self.show_start_page
         )
         back_btn.pack(side=tk.LEFT, padx=5)
+        
+        help_btn = tk.Button(
+            button_frame,
+            text="?",
+            font=("Arial", 14, "bold"),
+            width=3,
+            height=1,
+            bg="#87CEEB",
+            fg="white",
+            command=self.show_help_page,
+            relief=tk.RAISED,
+            bd=2
+        )
+        help_btn.pack(side=tk.RIGHT, padx=5)
 
 
 if __name__ == "__main__":
